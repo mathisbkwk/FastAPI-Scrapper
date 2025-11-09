@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 from sqlalchemy.orm import Session
 from ..repositories.user_repo import UserRepository
 from ..models.user import User
@@ -14,7 +14,7 @@ class UserService:
         """Get all users."""
         return self.repo.get_all()
     
-    def get_user_by_id(self, user_id: int) -> Optional[User]:
+    def get_user_by_id(self, user_id: int) -> User | None:
         """Get user by ID."""
         return self.repo.get_by_id(user_id)
     
@@ -23,11 +23,9 @@ class UserService:
         Create a new user.
         Validates that email and username are unique.
         """
-        # Check if email already exists
         if self.repo.get_by_email(email):
             raise ValueError(f"Email '{email}' already exists")
         
-        # Check if username already exists
         if self.repo.get_by_username(username):
             raise ValueError(f"Username '{username}' already exists")
         
