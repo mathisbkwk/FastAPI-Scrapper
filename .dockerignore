@@ -1,0 +1,28 @@
+# Ignore local dev artifacts
+.git
+.github
+.env
+.env.*
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+.mypy_cache/
+.pytest_cache/
+.pyright/
+.idea/
+.vscode/
+.DS_Store
+
+# Build outputs
+build/
+dist/
+.coverage
+htmlcov/
+site/
+
+# Node (if any)
+node_modules/
