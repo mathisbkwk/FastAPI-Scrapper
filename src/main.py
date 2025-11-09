@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from .core.config import settings
-from .graphql_app.router import graphql_router
+from .graphql.router import graphql_router
 
 app = FastAPI(
     title=settings.APP_NAME,
