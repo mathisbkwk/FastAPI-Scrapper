@@ -1,11 +1,11 @@
 import strawberry
-from typing import List, Optional
+from typing import List, cast
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from datetime import datetime
 
-from ..services.user_service import UserService
-from ..models.user import User as UserModel
+from ...services.user_service import UserService
+from ...models.user import User as UserModel
 
 
 @strawberry.type
@@ -20,15 +20,15 @@ class User:
     def from_model(user: UserModel) -> "User":
         """Convert SQLAlchemy model to GraphQL type."""
         return User(
-            id=user.id,
-            email=user.email,
-            username=user.username,
-            created_at=user.created_at
+            id=cast(int, user.id),
+            email=cast(str, user.email),
+            username=cast(str, user.username),
+            created_at=cast(datetime, user.created_at)
         )
 
 
 @strawberry.type
-class Query:
+class UserQuery:
     """GraphQL Query type with available queries."""
     
     @strawberry.field
@@ -56,7 +56,7 @@ class Query:
         return [User.from_model(u) for u in users]
     
     @strawberry.field
-    def user(self, info: strawberry.Info, user_id: int) -> Optional[User]:
+    def user(self, info: strawberry.Info, user_id: int) -> User | None:
         """Get user by ID."""
         db: Session = info.context["db"]
         service = UserService(db)
@@ -65,7 +65,7 @@ class Query:
 
 
 @strawberry.type
-class Mutation:
+class UserMutation:
     """GraphQL Mutation type for data modifications."""
     
     @strawberry.field
@@ -88,4 +88,3 @@ class Mutation:
             return service.delete_user(user_id)
         except ValueError as e:
             raise Exception(str(e))
-
