@@ -23,12 +23,6 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          install: true
-          driver-opts: network=host
-
       - name: Remove previous GHCR image tagged 'latest'
         run: |
           echo "Attempting to delete previous 'latest' image from registry..."
